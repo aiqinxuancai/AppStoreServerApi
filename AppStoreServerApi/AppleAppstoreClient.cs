@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -92,6 +93,12 @@ namespace AppStoreServerApi
             return await this.MakeRequest<OrderLookupResponse>($"{this.BaseUrl}/inApps/v1/lookup/{orderId}");
         }
 
+        public async Task<OrderLookupResponse?> LookupRefund(string originalTransactionId)
+        {
+            return await this.MakeRequest<OrderLookupResponse>($"{this.BaseUrl}/inApps/v1/refund/lookup/{originalTransactionId}");
+        }
+
+
         #region Request utilities
         private async Task<T?> MakeRequest<T>(string url)
         {
@@ -104,6 +111,7 @@ namespace AppStoreServerApi
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var body = await result.Content.ReadAsStringAsync();
+                Debug.WriteLine(body);
                 return JsonConvert.DeserializeObject<T>(body);
             }
 
