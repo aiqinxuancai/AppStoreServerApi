@@ -93,9 +93,9 @@ namespace AppStoreServerApi
             return await this.MakeRequest<OrderLookupResponse>($"{this.BaseUrl}/inApps/v1/lookup/{orderId}");
         }
 
-        public async Task<OrderLookupResponse?> LookupRefund(string originalTransactionId)
+        public async Task<RefundLookupResponse?> LookupRefund(string originalTransactionId)
         {
-            return await this.MakeRequest<OrderLookupResponse>($"{this.BaseUrl}/inApps/v1/refund/lookup/{originalTransactionId}");
+            return await this.MakeRequest<RefundLookupResponse>($"{this.BaseUrl}/inApps/v1/refund/lookup/{originalTransactionId}");
         }
 
 
