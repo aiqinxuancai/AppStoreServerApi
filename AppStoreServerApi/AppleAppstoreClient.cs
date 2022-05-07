@@ -77,7 +77,7 @@ namespace AppStoreServerApi
         // https://developer.apple.com/documentation/appstoreserverapi/get_transaction_history
         public async Task<HistoryResponse?> GetTransactionHistory(string originalTransactionId, string? revision)
         {
-            var query = revision != null ? $"?query={revision}" : "";
+            var query = revision != null ? $"?revision={revision}" : "";
 
             return await this.MakeRequest<HistoryResponse>($"{this.BaseUrl}/inApps/v1/history/{originalTransactionId}{query}");
         }
