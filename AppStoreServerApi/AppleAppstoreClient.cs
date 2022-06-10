@@ -98,6 +98,31 @@ namespace AppStoreServerApi
             return await this.MakeRequest<RefundLookupResponse>($"{this.BaseUrl}/inApps/v1/refund/lookup/{originalTransactionId}");
         }
 
+        public async Task<JObject> VerifyReceipt(string receiptData, string password, string environment = AppleEnvironment.Sandbox)
+        {
+            var url = environment switch
+            {
+                AppleEnvironment.Sandbox => "https://sandbox.itunes.apple.com/verifyReceipt",
+                AppleEnvironment.Production => "https://buy.itunes.apple.com/verifyReceipt",
+            };
+
+            var httpClient = new HttpClient();
+
+            JObject post = new JObject();
+            post["receipt_data"] = receiptData;
+            post["password"] = password;
+
+            HttpContent content = new StringContent(post.ToString());
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var response = await httpClient.PostAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+
+            return JObject.Parse(responseBody);
+        }
+
 
         #region Request utilities
         private async Task<T?> MakeRequest<T>(string url)
