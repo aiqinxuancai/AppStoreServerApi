@@ -108,11 +108,13 @@ namespace AppStoreServerApi
 
             var httpClient = new HttpClient();
 
-            JObject post = new JObject();
-            post["receipt_data"] = receiptData;
-            post["password"] = password;
+            var json = new JObject(new JProperty("receipt-data", receiptData),
+       new JProperty("password", password)).ToString();
 
-            HttpContent content = new StringContent(post.ToString());
+
+            //Debug.WriteLine(json);
+
+            HttpContent content = new StringContent(json);
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             var response = await httpClient.PostAsync(url, content);
 
