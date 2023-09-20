@@ -10,6 +10,7 @@ using System.Dynamic;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Transactions;
 
 namespace AppStoreServerApi
 {
@@ -88,6 +89,7 @@ namespace AppStoreServerApi
             return await this.MakeRequest<StatusResponse>($"{this.BaseUrl}/inApps/v1/subscriptions/{originalTransactionId}");
         }
 
+        
         public async Task<OrderLookupResponse?> LookupOrder(string orderId)
         {
             return await this.MakeRequest<OrderLookupResponse>($"{this.BaseUrl}/inApps/v1/lookup/{orderId}");
@@ -97,6 +99,12 @@ namespace AppStoreServerApi
         {
             return await this.MakeRequest<RefundLookupResponse>($"{this.BaseUrl}/inApps/v1/refund/lookup/{originalTransactionId}");
         }
+
+        public async Task<TransactionInfoResponse?> Transactions(string transactionId)
+        {
+            return await this.MakeRequest<TransactionInfoResponse>($"{this.BaseUrl}/inApps/v1/transactions/{transactionId}");
+        }
+
 
         public async Task<JObject> VerifyReceipt(string receiptData, string password, string environment = AppleEnvironment.Sandbox)
         {
@@ -141,6 +149,8 @@ namespace AppStoreServerApi
                 Debug.WriteLine(body);
                 return JsonConvert.DeserializeObject<T>(body);
             }
+
+            Debug.WriteLine($"{url} StatusCode:" + result.StatusCode);
 
             switch (result.StatusCode)
             {
