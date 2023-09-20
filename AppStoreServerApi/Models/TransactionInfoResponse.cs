@@ -9,7 +9,7 @@ namespace AppStoreServerApi.Models
     public class TransactionInfoResponse
     {
 
-        public List<string> SignedTransactionInfo { get; set; } = new();
+        public string SignedTransactionInfo { get; set; } = "";
         
     }
 }

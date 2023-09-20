@@ -78,7 +78,7 @@ namespace AppStoreServerApi
         // https://developer.apple.com/documentation/appstoreserverapi/get_transaction_history
         public async Task<HistoryResponse?> GetTransactionHistory(string originalTransactionId, string? revision)
         {
-            var query = revision != null ? $"?revision={revision}" : "";
+            var query = !string.IsNullOrEmpty(revision) ? $"?revision={revision}" : "";
 
             return await this.MakeRequest<HistoryResponse>($"{this.BaseUrl}/inApps/v1/history/{originalTransactionId}{query}");
         }
@@ -95,10 +95,18 @@ namespace AppStoreServerApi
             return await this.MakeRequest<OrderLookupResponse>($"{this.BaseUrl}/inApps/v1/lookup/{orderId}");
         }
 
+
         public async Task<RefundLookupResponse?> LookupRefund(string originalTransactionId)
         {
             return await this.MakeRequest<RefundLookupResponse>($"{this.BaseUrl}/inApps/v1/refund/lookup/{originalTransactionId}");
         }
+
+        public async Task<RefundHistoryResponse?> GetRefundHistory(string transactionId, string? revision)
+        {
+            var query = !string.IsNullOrEmpty(revision) ? $"?revision={revision}" : "";
+            return await this.MakeRequest<RefundHistoryResponse>($"{this.BaseUrl}/inApps/v2/refund/lookup/{transactionId}{query}");
+        }
+
 
         public async Task<TransactionInfoResponse?> Transactions(string transactionId)
         {
